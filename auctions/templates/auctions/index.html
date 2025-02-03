@@ -1,0 +1,157 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2 class="list-title">
+        {% if personalized %}
+            Personalized Recommendations
+        {% else %}
+            Active Listings
+        {% endif %}
+    </h2>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="message">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <div id="activelist">
+        {% if personalized %}
+            {% for list in recommendations %}
+                <div class="card">
+                    <a class="title">{{ list.title }}</a>
+                    <a class="cat">{{ list.category }}</a>
+                    {% if list.image_url %}
+                        <img src="{{ list.image_url }}" class="list_img">
+                    {% else %}
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/No_image_3x4.svg/1024px-No_image_3x4.svg.png" alt="No image Provided" class="list_img">
+                    {% endif %}
+                    
+                    <div class="card-content">
+                        <p class="desc">{{ list.desc }}</p>
+                        <p><span class="c_price">Starting Bid: </span>{{ list.starting_bid }} $</p>
+                        <p><span class="c_price">Present Bid: </span>{{ list.current_price }} $</p>
+                        <a class="view-bid" href="{% url 'listingpage' list.id %}">View Bid</a>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            {% for list in a1 %}
+                <div class="card">
+                    <a class="title">{{ list.title }}</a>
+                    <a class="cat">{{ list.category }}</a>
+                    {% if list.image_url %}
+                        <img src="{{ list.image_url }}" class="list_img">
+                    {% else %}
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/No_image_3x4.svg/1024px-No_image_3x4.svg.png" alt="No image Provided" class="list_img">
+                    {% endif %}
+                    
+                    <div class="card-content">
+                        <p class="desc">{{ list.desc }}</p>
+                        <p><span class="c_price">Starting Bid: </span>{{ list.starting_bid }} $</p>
+                        <a class="view-bid" href="{% url 'listingpage' list.id %}">View Bid</a>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <style>
+        p {
+            padding: 1vw;
+        }
+
+        .list-title {
+            text-align: center;
+            font-size: 2.5em;
+            margin: 20px 0;
+            color: #343a40; /* Dark color for title */
+            font-weight: bold;
+        }
+
+        #activelist {
+            margin-top: 4vw;
+            display: grid;
+            width: 90%;
+            margin-left: 5%;
+            grid-template-rows: repeat(auto, 1fr);
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Responsive columns */
+            font-family: 'Nunito', sans-serif;
+            text-align: center;
+            gap: 2vw; /* Spacing between cards */
+        }
+
+        .card {
+            background-color: #ffffff; /* White background for cards */
+            border-radius: 10px; /* Rounded corners */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            transition: transform 0.3s, box-shadow 0.3s; /* Transition for hover effects */
+            overflow: hidden; /* Round corners on images */
+            margin: 0 auto; /* Center the card */
+            padding: 15px; /* Padding inside cards */
+            display: flex; /* Flexbox layout for equal space */
+            flex-direction: column; /* Stack elements vertically */
+            justify-content: space-between; /* Space out items evenly */
+            height: 100%; /* Allow cards to take full height */
+        }
+
+        .card:hover {
+            transform: scale(1.05); /* Enlarge card on hover */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Shadow on hover */
+        }
+
+        img {
+            width: 100%;
+            border-radius: 8px; /* Rounded corners for images */
+            margin-bottom: 10px; /* Space below image */
+        }
+
+        .title {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #007bff; /* Bootstrap primary color */
+            transition: color 0.3s; /* Smooth color transition */
+        }
+
+        .title:hover {
+            color: #0056b3; /* Darker color on hover */
+        }
+
+        .c_price {
+            font-weight: bold;
+        }
+
+        .view-bid {
+            display: inline-block;
+            margin-top: 10px;
+            color: #007bff; /* Bootstrap primary color */
+            font-weight: bold; /* Bold links */
+            text-decoration: none; /* No underline */
+            transition: color 0.3s, transform 0.3s; /* Transition for hover effects */
+        }
+
+        .view-bid:hover {
+            color: #0056b3; /* Darker color on hover */
+            transform: scale(1.05); /* Slightly enlarge link */
+        }
+
+        .cat {
+            font-weight: 600; /* Medium weight for category */
+            color: #6c757d; /* Grey color */
+            font-size: 1.1em; /* Slightly larger category font */
+        }
+
+        .desc {
+            font-size: 0.9em; /* Slightly smaller font for description */
+            color: #6c757d; /* Grey color for description */
+        }
+
+        .card-content {
+            display: flex; /* Flexbox for card content */
+            flex-direction: column; /* Stack vertically */
+            flex-grow: 1; /* Allow to grow and take available space */
+        }
+        
+    </style>
+
+{% endblock %}

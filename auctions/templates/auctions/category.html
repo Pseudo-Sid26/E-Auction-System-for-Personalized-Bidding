@@ -1,0 +1,72 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2 class="categories-title">All Categories</h2>
+    <div id="activelist">
+        {% for list in cat_list %}
+        <div class="card">
+            <a class="title" href="{% url 'cat' list.category %}">{{ list.category }}</a>
+        </div>  
+        {% endfor %}
+    </div>
+      
+    <style>
+        body {
+            background-color: #f8f9fa; /* Light background for contrast */
+            font-family: 'Nunito', sans-serif; /* Consistent font */
+        }
+
+        .categories-title {
+            text-align: center;
+            font-size: 2.5em; /* Larger title size */
+            margin: 20px 0; /* Margin above and below */
+            color: #343a40; /* Dark color for title */
+            font-weight: bold; /* Bold text */
+        }
+
+        #activelist {
+            margin-top: 4vw;
+            display: grid;
+            width: 40%;
+            margin: 0 auto; /* Center the grid */
+            grid-gap: 2vw;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsive columns */
+            font-family: 'Nunito', sans-serif;
+            text-align: center;
+        }
+
+        .card {
+            background-color: #ffffff; /* White background for cards */
+            border-radius: 10px; /* Rounded corners */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            transition: transform 0.3s, box-shadow 0.3s; /* Transition for hover effects */
+            overflow: hidden; /* Round corners on hover */
+            text-align: center; /* Center text in cards */
+            padding: 15px; /* Padding inside cards */
+            cursor: pointer; /* Pointer cursor on hover */
+        }
+
+        .card:hover {
+            transform: scale(1.05); /* Enlarge card on hover */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Shadow on hover */
+        }
+
+        .title {
+            font-size: 1.5em; /* Larger font size for category title */
+            color: #007bff; /* Bootstrap primary color */
+            text-decoration: none; /* Remove underline */
+            transition: color 0.3s; /* Smooth color transition */
+        }
+
+        .title:hover {
+            color: #0056b3; /* Darker color on hover */
+            text-decoration: underline; /* Underline on hover */
+        }
+
+        img {
+            width: 100%; /* Full width for images */
+            border-radius: 8px; /* Rounded corners for images */
+            margin-bottom: 10px; /* Space below image */
+        }
+    </style>
+{% endblock %}

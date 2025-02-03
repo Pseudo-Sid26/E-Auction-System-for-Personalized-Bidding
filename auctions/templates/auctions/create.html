@@ -1,0 +1,83 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2 class="create-listing-title">Create Listing</h2>
+    <div id="activelist">
+        <form method="POST" class="listing-form">
+            {% csrf_token %}
+            <input required placeholder="Title" autofocus type="text" name="create_title" class="form-input"/>
+            <textarea placeholder="Add Description" required name="create_desc" class="form-textarea"></textarea>
+            <input required placeholder="Starting bid" type="number" name="create_initial_bid" class="form-input"/>
+            <input placeholder="Image URL (optional)" type="text" name="img_url" class="form-input"/>
+            <input required placeholder="Category" type="text" name="category" class="form-input"/>
+            <button class="btn" type="submit">Submit</button>
+        </form>    
+    </div>
+      
+    <style>
+        body {
+            background-color: #f8f9fa; /* Light background */
+            font-family: 'Nunito', sans-serif; /* Consistent font */
+        }
+
+        .create-listing-title {
+            font-weight: bold;
+            text-align: center;
+            font-size: 2.5em; /* Larger title size */
+            margin: 20px 0; /* Margin above and below */
+            color: #007bff; /* Primary color */
+        }
+
+        #activelist {
+            width: 60%;
+            margin: 0 auto; /* Center the container */
+            background-color: #ffffff; /* White background for the form */
+            border-radius: 10px; /* Rounded corners */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            padding: 20px; /* Padding inside the container */
+        }
+
+        .listing-form {
+            display: grid;
+            grid-gap: 1.5vw; /* Space between form elements */
+        }
+
+        .form-input,
+        .form-textarea {
+            padding: 10px; /* Padding inside inputs */
+            border: 1px solid #ced4da; /* Light border */
+            border-radius: 5px; /* Rounded corners */
+            font-size: 1em; /* Font size */
+            width: 100%; /* Full width */
+            transition: border-color 0.3s; /* Smooth border color transition */
+        }
+
+        .form-input:focus,
+        .form-textarea:focus {
+            border-color: #007bff; /* Highlight border on focus */
+            outline: none; /* Remove default outline */
+        }
+
+        .form-textarea {
+            height: 10vw; /* Set height for textarea */
+            resize: none; /* Prevent resizing */
+        }
+
+        .btn {
+            background-color: #007bff; /* Primary button color */
+            color: white; /* White text */
+            border: none; /* No border */
+            border-radius: 5px; /* Rounded corners */
+            padding: 10px; /* Padding inside button */
+            cursor: pointer; /* Pointer cursor */
+            width: 30%; /* Button width */
+            margin: 0 auto; /* Center button */
+            transition: background-color 0.3s, transform 0.3s; /* Transition for hover effects */
+        }
+
+        .btn:hover {
+            background-color: #0056b3; /* Darker shade on hover */
+            transform: scale(1.05); /* Slightly enlarge button */
+        }
+    </style>
+{% endblock %}

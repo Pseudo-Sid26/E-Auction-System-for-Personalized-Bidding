@@ -1,0 +1,153 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{% block title %}Auctions{% endblock %}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link href="{% static 'auctions/styles.css' %}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOMW9Kf4AlN3rWj1N3gk0PpGdeE1pEZZ2yWgFlR" crossorigin="anonymous">
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #f8f9fa; /* Light background for better contrast */
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+            color: #343a40; /* Dark color for headings */
+            font-size: 2.5em; /* Larger heading */
+            font-weight: 700; /* Bold heading */
+        }
+
+        .user-info {
+            text-align: center;
+            margin: 20px 0; /* Space around user info */
+            font-size: 1.2em; /* Bigger font size */
+            color: #6c757d; /* Grey color for user info */
+            font-weight: 500; /* Medium weight */
+        }
+
+        .user-info .avatar {
+            font-size: 50px; /* Adjust the size as needed */
+            color: #007bff; /* Set your desired color */
+            margin-right: 10px; /* Space between icon and text */
+            vertical-align: middle; /* Align vertically */
+        }
+
+        .nav {
+            margin-top: 20px; /* Space above the navigation */
+            margin-bottom: 20px; /* Space below the navigation */
+        }
+
+        .nav-link {
+            font-size: 1.1em; /* Slightly larger font for links */
+            color: #007bff; /* Bootstrap primary color */
+            transition: color 0.3s, transform 0.3s; /* Smooth transition for color and transform */
+        }
+
+        .nav-link:hover {
+            color: #0056b3; /* Darker blue on hover */
+            text-decoration: none; /* Remove underline on hover */
+            transform: scale(1.1); /* Slightly enlarge the link */
+        }
+
+        hr {
+            margin: 30px 0; /* More space around the horizontal rule */
+        }
+
+        .container {
+            max-width: 1200px; /* Limit container width */
+            margin: auto; /* Center the container */
+            padding: 15px; /* Padding around content */
+            background-color: white; /* White background for content */
+            border-radius: 8px; /* Rounded corners */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        }
+
+        /* Profile Card */
+        .profile-card {
+            background-color: #e9ecef; /* Light grey background for profile */
+            border-radius: 10px; /* Rounded corners */
+            padding: 20px;
+            text-align: center;
+            margin: 20px auto; /* Centered margin */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15); /* Shadow */
+        }
+
+        .profile-card h2 {
+            font-size: 1.5em; /* Smaller font size for profile heading */
+            color: #343a40; /* Darker color for visibility */
+        }
+
+        .profile-card a {
+            display: inline-block;
+            margin-top: 10px;
+            color: #007bff; /* Primary color */
+            font-weight: bold; /* Bold links */
+            text-decoration: none; /* No underline */
+            transition: color 0.3s, transform 0.3s; /* Smooth transition for hover effect */
+        }
+
+        .profile-card a:hover {
+            color: #0056b3; /* Darker blue on hover */
+            transform: scale(1.05); /* Slightly enlarge the link */
+            text-decoration: underline; /* Underline on hover */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Auctions</h1>
+        <div class="user-info">
+            {% if user.is_authenticated %}
+                <i class="fas fa-star avatar"></i> <!-- Default Favicon Icon -->
+                Signed in as <strong>{{ user.username }}</strong>.
+            {% else %}
+                Not signed in.
+            {% endif %}
+        </div>
+        <ul class="nav nav-pills nav-fill">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'index' %}">Active Listings</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'cat_list' %}">Categories</a>
+            </li>
+
+            {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'create' %}">Create Listing</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'watchlistpage' user.username %}">Watch List</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'winnings' %}">Your Winnings</a>
+                </li>
+                <li class = "nav-item">
+                    <a class="nav-link" href="{% url 'chatbot' %}" target="_blank">Ask Us</a>    
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}" >Log In</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'register' %}">Register</a>
+                </li>
+            {% endif %}
+        </ul>
+        <hr>
+        {% block body %}
+        {% endblock %}
+    </div>
+</body>
+</html>

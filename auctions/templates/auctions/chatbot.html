@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+    
+    <!-- jQuery for AJAX -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Google Fonts (Roboto) -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Styles -->
+    <style>
+        /* Styling similar to ChatGPT-like UI */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .chat-container {
+            width: 400px;
+            height: 600px;
+            background-color: #fff;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .chat-header {
+            background-color: #007bff;
+            padding: 15px;
+            color: white;
+            font-size: 18px;
+            font-weight: 500;
+            text-align: center;
+        }
+        .chat-body {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .chat-bubble {
+            margin: 10px 0;
+            max-width: 80%;
+            padding: 10px;
+            border-radius: 20px;
+            line-height: 1.5;
+        }
+        .chat-bubble.user {
+            background-color: #007bff;
+            color: white;
+            align-self: flex-end;
+        }
+        .chat-bubble.bot {
+            background-color: #f1f1f1;
+            color: #333;
+            align-self: flex-start;
+        }
+        .chat-footer {
+            padding: 15px;
+            background-color: #f8f9fa;
+            display: flex;
+            align-items: center;
+        }
+        .chat-footer input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            outline: none;
+            font-size: 16px;
+        }
+        .chat-footer button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            margin-left: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .chat-footer button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<div class="chat-container">
+    <div class="chat-header">
+        Chatbot
+    </div>
+    <div class="chat-body" id="chat-body">
+        <!-- Chat bubbles will be dynamically added here -->
+    </div>
+    <div class="chat-footer">
+        <form id="chat-form" method="POST">
+            {% csrf_token %}  <!-- Ensure CSRF token is present -->
+            <input type="text" id="question" placeholder="Ask something..." autocomplete="off">
+            <button type="submit" id="ask-btn">➤</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Function to append a chat bubble
+    function appendChatBubble(message, sender) {
+        const bubble = document.createElement('div');
+        bubble.classList.add('chat-bubble', sender);
+        bubble.textContent = message;
+        document.getElementById('chat-body').appendChild(bubble);
+        
+        // Scroll to the bottom of chat
+        const chatBody = document.getElementById('chat-body');
+        chatBody.scrollTop = chatBody.scrollHeight;
+    }
+
+    // AJAX call to send the question and get the response
+    $('#chat-form').submit(function(e) {
+        e.preventDefault();  // Prevent default form submission
+        var question = $('#question').val();
+
+        if (question.trim() === "") return; // Don't send empty messages
+
+        // Append user's message
+        appendChatBubble(question, 'user');
+
+        $.ajax({
+            url: "{% url 'chatbot' %}",  // Replace with your chatbot view URL
+            type: 'POST',
+            data: {
+                'question': question,
+                'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()  // Fetch CSRF token from form
+            },
+            success: function(response) {
+                // Append bot's response
+                appendChatBubble(response.response, 'bot');
+                $('#question').val('');  // Clear input
+            },
+            error: function(xhr, status, error) {
+                appendChatBubble('An error occurred: ' + error, 'bot');
+            }
+        });
+    });
+
+    // Trigger sending question on Enter key press
+    $('#question').keypress(function(e) {
+        if (e.which === 13) {
+            $('#ask-btn').click();
+        }
+    });
+</script>
+
+</body>
+</html>
